@@ -6,3 +6,26 @@ table{
 .even{
     background-color: red;
 }
+#paginator
+{
+    margin: 3em auto 1em auto;
+    width: fit-content;
+    text-align: center;
+    color: black !important;
+    text-decoration: none !important;
+}
+#paginator svg
+{
+    width: 1em;
+    height: 1em;
+    margin: 0 0.5em;
+    cursor: pointer;
+    color: black !important;
+    text-decoration: none !important;
+}
+ 
+#paginator *
+{
+    color: black !important;
+    text-decoration: none !important;
+}

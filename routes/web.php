@@ -13,7 +13,7 @@ Route::post("makers/store",[MakerController::class,"store"])->name("makers/store
 Route::delete("makers/{id}",[MakerController::class,"destroy"])->name('makers/destroy');
 Route::post("makers/{id}",[MakerController::class,"edit"])->name('makers/edit');
 Route::patch('makers/{id}', [MakerController::class, 'update'])->name('makers/update');
-Route::get("makers/{letter}",[MakerController::class,"index"])->name("makers"); //
+Route::get('makers/{letter}', [MakerController::class, 'index2'])->name('makers.letter');
 
 Route::get("fuels",[FuelsContoller::class,"index"])->name("fuels");
 Route::post("fuels/store",[FuelsContoller::class,"store"])->name("fuels/store");
