@@ -33,14 +33,14 @@
                 <td>
                     <form action="{{ route('carModels/edit', $entity->id) }}" method="POST">
                         @csrf
-                        <button type="submit"><img src="edit.png" alt="" height="20px"></button>
+                        <button type="submit"><img src="/edit.png" alt="" height="20px"></button>
                     </form>
                 </td>
                 <td>
                     <form action="{{ route('carModels/destroy', $entity->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit"><img src="delete.png" alt="" height="20px"></button>
+                        <button type="submit"><img src="/delete.png" alt="" height="20px"></button>
                     </form>
                 </td>
             </tr>
