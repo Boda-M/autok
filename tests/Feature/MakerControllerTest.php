@@ -42,4 +42,27 @@ class MakerControllerTest extends TestCase
         $this->assertDatabaseHas('makers', $makerData);
         $response->assertSessionHas('success', 'sikeres létrehozás');
     }
+
+
+    public function test_user_can_update_maker(){
+        $maker = Maker::factory()->create();
+        $updateData = ['name' => 'Updated Maker'];
+        $response = $this->patch(route('makers/update', $maker->id), $updateData);
+
+        $response->assertRedirect(route('makers'));
+        $this->assertDatabaseHas('makers', $updateData);
+
+        $response->assertSessionHas('success', 'Gyártó módosítva.');
+    }
+
+    public function test_user_can_delete_maker(){
+        $maker = Maker::factory()->create();
+        
+        $response = $this->delete(route('makers/destroy', $maker->id));
+
+        $this->assertDatabaseMissing('makers', ['id' => $maker->id]);
+
+        /*$response->assertSessionHas('success', 'Gyártó módosítva.');
+        $response->assertRedirect(route('makers'));*/
+    }
 }

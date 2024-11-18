@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="app">
-        <div class="container">
+        <div class="container navbar">
             <a href="{{route("makers")}}">Makers</a>
             <a href="{{route("fuels")}}">Fuels</a>
             <a href="{{route("karosszeriak")}}">Karosszériák</a>
