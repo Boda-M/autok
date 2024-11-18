@@ -4,8 +4,8 @@
     <form action="{{route("fuels/update",$entity->id)}}" method="post">
         @csrf
         @method('PATCH')
-        <label for="name">Új üzemanyag</label>
-        <input type="text" name="name" id="name" value="{{$entity->name}}">
+        <label for="name">Név:</label><br>
+        <input type="text" name="name" id="name" value="{{$entity->name}}"><br>
         <button type="submit">Módosítás</button>
     </form>
 @endsection

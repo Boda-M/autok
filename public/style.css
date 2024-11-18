@@ -29,3 +29,13 @@ table{
     color: black !important;
     text-decoration: none !important;
 }
+
+.error{
+    color: red;
+}
+.td{
+    margin: 5px;
+}
+table {
+    border-spacing: 10px;
+  }

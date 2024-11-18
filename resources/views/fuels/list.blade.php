@@ -10,8 +10,8 @@
     <form action="{{route("fuels/store")}}" method="post">
         @csrf
         @method('POST')
-        <label for="name">Új üzemanyag</label>
-        <input type="text" name="name" id="name">
+        <label for="name">Új üzemanyag:</label><br>
+        <input type="text" name="name" id="name"><br>
         <button type="submit">Létrehozás</button>
     </form>
     <tbody>
@@ -36,4 +36,7 @@
         @endforeach
     </tbody>
 </table>
+<div id="paginator">
+    {{$entities->links()}}
+</div>
 @endsection

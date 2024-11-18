@@ -35,6 +35,9 @@ class MakerController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
         $maker =new Maker();
         $maker->name = $request->input('name');
         $maker->logo = $request->input('name').".png";
@@ -63,6 +66,9 @@ class MakerController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
         $maker=Maker::findOrFail($id);
         $maker->name=$request->name;
         $maker->logo = $request->logo;
@@ -80,28 +86,6 @@ class MakerController extends Controller
         $maker->delete();
 
         return redirect()->route("makers")->with('success', 'Element deleted successfully.');
-    }
-
-    public static function getLogo($maker)
-    {
-        if (empty($maker->logo))
-        {
-            return '';
-        }
- 
-        return env('LOGO_PATH') . $maker->logo;
-    }
- 
-    public function fetchModels($makerId)
-    {
-        $maker = Maker::find($makerId);
-        $result['data'] = Model::orderBy("name")
-            ->select('id','name')
-            ->where('maker_id', $makerId)
-            ->get();;
-        $result['logo'] = $this->getLogo($maker);
- 
-        return response()->json($result);
     }
 }
  

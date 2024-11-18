@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Maker;
 use App\Models\CarModel;
+use Psy\Readline\Hoa\Console;
 use function Laravel\Prompts\progress;
  
  
@@ -34,6 +35,7 @@ class CarModelSeeder extends Seeder
             $model = $data[$i][2];
             if(array_search($model, $models) === false){
                 $maker = $data[$i][1];
+                error_log(print_r($maker, TRUE));
                 $makerId = Maker::where('name', $maker)->first()->id;
                 $models[] = $model;
  

@@ -20,8 +20,8 @@
     <form action="{{route("makers/store")}}" method="post">
         @csrf
         @method('POST')
-        <label for="name">Új név</label>
-        <input type="text" name="name" id="name">
+        <label for="name">Új név</label><br>
+        <input type="text" name="name" id="name"><br>
         <button type="submit">Létrehozás</button>
     </form>
         @foreach($entities as $entity)
@@ -33,6 +33,12 @@
             @endif
                 <td id={{$entity->id}}>{{$entity->id}}</td>
                 <td>{{$entity->name}}</td>
+                <td>
+                <form action="{{ route('carModels.idMaker', $entity->id) }}" method="GET">
+                        @csrf
+                        <button type="submit">details</button>
+                    </form>
+                </td>
                 <td>
                     <form action="{{ route('makers/edit', $entity->id) }}" method="POST">
                         @csrf

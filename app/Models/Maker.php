@@ -10,6 +10,12 @@ class Maker extends Model
     use HasFactory;
 
     public $timestamps=false;
+    //protected $fillable = ['name'];
+
+    function models()
+    {
+        return $this->hasMany(CarModel::class);
+    }
 
     public static function findByLetter($letter)
     {

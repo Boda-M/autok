@@ -8,7 +8,7 @@ class FuelsContoller extends Controller
 {
     public function index()
     {
-        return view ('fuels/list', ['entities' => Fuel::all()]); // "/list" idk kell e
+        return view ('fuels/list', ['entities' => Fuel::paginate(20)]); // "/list" idk kell e
     }
  
     /**
@@ -24,6 +24,9 @@ class FuelsContoller extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
         $fuels =new Fuel();
         $fuels->name = $request->input('name');
         $fuels->save();
@@ -51,6 +54,9 @@ class FuelsContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
         $fuel=Fuel::findOrFail($id);
         $fuel->name=$request->name;
         

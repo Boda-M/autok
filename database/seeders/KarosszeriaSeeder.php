@@ -1,11 +1,11 @@
 <?php
- 
+
 namespace Database\Seeders;
- 
+
 use App\Models\Karosszeria;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
- 
+
 class KarosszeriaSeeder extends Seeder
 {
     const ITEMS = [
@@ -32,4 +32,3 @@ class KarosszeriaSeeder extends Seeder
         }
     }
 }
- 

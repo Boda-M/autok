@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karosszeria;
 use Illuminate\Http\Request;
 
 class KarosszeriaController extends Controller
@@ -11,7 +12,7 @@ class KarosszeriaController extends Controller
      */
     public function index()
     {
-        //
+        return view ('karosszeriak/list', ['entities' => Karosszeria::paginate(20)]); // "/list" idk kell e -->igen mert az view/karosszeriak folder fájlja
     }
 
     /**
@@ -27,7 +28,13 @@ class KarosszeriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
+        $karosszeria =new Karosszeria();
+        $karosszeria->name = $request->input('name');
+        $karosszeria->save();
+        return redirect()->route('karosszeriak')->with("success","sikeres létrehozás");
     }
 
     /**
@@ -43,7 +50,7 @@ class KarosszeriaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view("karosszeriak/edit",["entity"=>Karosszeria::find($id)]);
     }
 
     /**
@@ -51,7 +58,14 @@ class KarosszeriaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+        ]);
+        $karosszeria=Karosszeria::findOrFail($id);
+        $karosszeria->name=$request->name;
+
+        $karosszeria->save();
+        return redirect("karosszeriak")->with('success','Karosszéria módosítva');
     }
 
     /**
@@ -59,6 +73,9 @@ class KarosszeriaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $karosszeria=Karosszeria::findOrFail($id);
+        $karosszeria->delete();
+
+        return redirect('karosszeriak')->with('success', 'Karosszéria törölve');
     }
 }

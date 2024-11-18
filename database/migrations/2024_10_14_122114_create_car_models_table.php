@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('car_models', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('idMaker');
+            $table->unsignedBigInteger('idMaker');
+            $table->foreign('idMaker')->references('id')->on('makers');
             $table->string('name');
-            $table->timestamps();
             
         });
     }
