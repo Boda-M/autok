@@ -17,12 +17,12 @@
             </form>
         @endforeach
     </div>
-    <form action="{{route("makers/store")}}" method="post">
+    <form class="hozzaadMenu" action="{{route("makers/store")}}" method="post">
         @csrf
         @method('POST')
         <label for="name">Új név</label><br>
         <input type="text" name="name" id="name"><br>
-        <button type="submit">Létrehozás</button>
+        <button type="submit">Létrehozáss</button>
     </form>
         @foreach($entities as $entity)
             <tr>

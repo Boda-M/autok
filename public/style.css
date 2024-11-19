@@ -70,3 +70,8 @@ table {
     font-size: x-large;
     text-decoration: none;
 }
+
+.hozzaadMenu{
+    margin: 10px;
+    border: 1px solid black;
+}

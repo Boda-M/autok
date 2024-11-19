@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section("content")
     <h1>Gyártó Módosít</h1>
-    <form action="{{route("makers/update",$entity->id)}}" method="post">
+    <form class="hozzaadMenu" action="{{route("makers/update",$entity->id)}}" method="post">
         @csrf
         @method('PATCH')
         <label for="name">Új név</label><br>

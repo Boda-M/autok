@@ -38,6 +38,9 @@ class CarModelController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:50',
             'idMaker' => 'required|exists:makers,id',
+        ], [
+            'name.min' => 'Legalább 3 karakter hosszú legyen!',
+            'name.required' => 'Kötelező mező'
         ]);
         $carModel=new CarModel();
         $carModel->name=$request->name;

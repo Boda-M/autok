@@ -61,8 +61,5 @@ class MakerControllerTest extends TestCase
         $response = $this->delete(route('makers/destroy', $maker->id));
 
         $this->assertDatabaseMissing('makers', ['id' => $maker->id]);
-
-        /*$response->assertSessionHas('success', 'Gyártó módosítva.');
-        $response->assertRedirect(route('makers'));*/
     }
 }

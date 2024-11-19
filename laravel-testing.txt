@@ -1,0 +1,176 @@
+https://docs.phpunit.de/en/11.4/
+
+Laravel esetében ez nem kell, mert része az alapból feltelepülő csomagnak
+> composer require --dev phpunit/phpunit
+
+https://laravel.com/docs/11.x/testing
+
+phpunit.xml fájl módosítása annak érdekében, hogy a fizikai adatbázis ne változzon a tesztek során:
+A <php> szekcióban:
+	<env name="DB_CONNECTION" value="sqlite"/>
+	<env name="DB_DATABASE" value=":memory:"/>
+
+Feature teszt létrehozása
+> php artisan make:test SomethingTest
+
+FONTOS, hogy a teszt neve Test-re végződjön!
+
+Unit teszt létrehozása
+> php artisan make:test SomethingTest --unit
+
+Adjuk hozzá a RefreshDatabase traitet annak érdekében, hogy a tesztek mindig alahelyzetbe állított adatbázissal fussanak:
+
+class SomethingTest extends TestCase
+{
+    use RefreshDatabase;
+	
+Teszteket rendszerint kamu adatokkal írunk. Ehhez szükség van Factory-ra.
+Lásd: https://laravel.com/docs/11.x/eloquent-factories
+
+> php artisan make:factory SomethingFactory
+
+ahol Something a model neve.
+	
+<?php
+
+namespace Database\Factories;
+
+use App\Models\SomethingParent;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Something>
+ */
+class SomethingFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $parent = SomethingParent::factory()->create();
+        return [
+                // Adjust the data as necessary
+                'name' => $this->faker->name,
+                'parent_id' => $parent->id,
+        ];
+    }
+}
+
+A fenti példában a faker számos adattípus generálására képes. A teljes lista itt található: 
+
+vendor/fakerphp/faker/src/Faker/Generator.php
+ 
+
+Írjon tesztet a CRUD műveletekre. 
+/**
+ * Listázás:
+ * FONTOS, hogy a tesztek test_ prefix-el kezdődjenek! 
+ */
+class SomethingControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_user_can_view_somethings_index()
+    {
+        // Create a few something records in the database
+        Something::factory()->count(3)->create();
+
+        // Send a GET request to the index route
+        $response = $this->get(route('somethings.index'));
+
+        // Check if the response status is OK
+        $response->assertStatus(200);
+
+        // Assert that the response view contains somethings data
+        $response->assertViewHas('somethings');
+    }
+	
+/**
+ * Létrehozás
+ */
+
+    public function test_authenticated_user_can_create_something()
+    {
+        // Simulate an authenticated user
+        $this->actingAs(User::factory()->create());
+
+        $data = ['name' => 'New Something'];
+
+        $response = $this->post(route('somethings.store'), $data);
+
+        $response->assertRedirect(route('somethings.index'));
+
+        // Assert that the response redirects to the somethings index route with a success message
+        $this->assertDatabaseHas('somethings', $data);
+        $response->assertSessionHas('success', 'New Something sikeresen létrehozva');
+    } 
+	
+/**
+ * Módosítás
+ */
+	
+	public function test_authenticated_user_can_update_something()
+    {
+        $something = Something::factory()->create();
+
+        // Simulate an authenticated user
+        $this->actingAs(User::factory()->create());
+
+        $updatedData = ['name' => 'Updated Somebody'];
+
+        $response = $this->patch(route('somethings.update', $something->id), $updatedData);
+
+        // Assert that the something was updated in the database
+        $this->assertDatabaseHas('somethings', $updatedData);
+
+        // Assert that the response redirects with a success message
+        $response->assertRedirect(route('somethings.index'));
+        $response->assertSessionHas('success', 'Updated Somebody sikeresen módosítva');
+    } 
+	
+/**
+ * Törlés
+ */ 
+ 
+	public function test_authenticated_user_can_delete_something()
+    {
+        $something = Something::factory()->create();
+
+        // Simulate an authenticated user
+        $this->actingAs(User::factory()->create());
+
+        // Send a DELETE request to the destroy route
+        $response = $this->delete(route('somethings.destroy', $something->id));
+
+        // Assert that the something was deleted from the database
+        $this->assertDatabaseMissing('somethings', ['id' => $something->id]);
+
+        // Assert that the response redirects with a success message
+        $response->assertRedirect(route('somethings.index'));
+        $response->assertSessionHas('success', 'Sikeresen törölve');
+    }
+	
+/**
+ * Tesztek futtatása
+ */
+ 
+Az összes tesz futtatása:
+ 
+	> vendor\bin\phpunit
+
+
+Csak a kiválasztott tesztek futtatása:
+
+	> vendor\bin\phpunit --filter SomethingTest
+	
+Egyetlen teszt futtatása
+
+	> vendor\bin\phpunit --filter SomethingTest::test_user_can_view_somethings_index
+
+
+A kimenet formázott megjelenítése (Jól mutat a project doksiban :-) ):
+
+	> vendor\bin\phpunit --testdox
